@@ -1,0 +1,8 @@
+{
+  "LABEL_PRIORITY": ["wall_common_filled", "door_common", "meta"],
+  "COLOR_MAP": {
+    "wall_common_filled": [255, 0, 255],
+    "door_common": [0, 255, 255],
+    "meta": [255, 255, 0]
+  }
+}
