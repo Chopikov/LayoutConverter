@@ -88,13 +88,15 @@ if __name__ == "__main__":
         img_bytes = base64.b64decode(layout['imageData'])
         img_curr = cv2.imdecode(np.fromstring(img_bytes, np.uint8), cv2.IMREAD_COLOR)
         img_resized = convert_image(img_curr, layout)
-        img_mask = np.full(img_resized.shape, np.uint8(255))
+        shape = img_resized.shape
+        img_mask = np.full((shape[0], shape[1]), np.uint8(255))
 
         for label in config['LABEL_PRIORITY']:
             objs = filter(lambda x: x['label'] == label, layout['shapes'])
             for o in objs:
-                DRAW_MAP[o['shape_type']](img_mask, tuple(COLOR_MAP[label]), o['points'])
+                DRAW_MAP[o['shape_type']](img_mask, COLOR_MAP[label], o['points'])
         file_name = os.path.splitext(file['name'])[0]
 
         cv2.imwrite(os.path.join(dst_img, file_name) + '.png', img_resized)
         cv2.imwrite(os.path.join(dst_mask, file_name) + '.png', img_mask)
+        print(file_name)
