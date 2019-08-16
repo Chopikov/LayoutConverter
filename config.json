@@ -1,8 +1,42 @@
 {
-  "LABEL_PRIORITY": ["wall_common_filled", "door_common", "meta"],
+  "LABEL_PRIORITY": [
+    "meta",
+    "sink",
+    "toilet",
+    "bath",
+    "shower",
+    "chimney",
+    "fireplace",
+    "sauna_bench",
+    "stove",
+    "electrical_appliance",
+    "heater",
+    "stair",
+    "wall",
+    "railing",
+    "door_swing",
+    "door_zfold",
+    "door_slide",
+    "window"
+  ],
   "COLOR_MAP": {
-    "wall_common_filled": [255, 0, 255],
-    "door_common": [0, 255, 255],
-    "meta": [255, 255, 0]
+    "meta": 0,
+    "sink": 10,
+    "toilet": 20,
+    "bath": 30,
+    "shower": 40,
+    "chimney": 50,
+    "fireplace": 60,
+    "sauna_bench": 70,
+    "stove": 80,
+    "electrical_appliance": 90,
+    "heater": 100,
+    "stair": 110,
+    "wall": 120,
+    "railing": 130,
+    "door_swing": 140,
+    "door_zfold": 150,
+    "door_slide": 160,
+    "window": 170
   }
 }
