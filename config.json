@@ -5,18 +5,19 @@
     "toilet",
     "bath",
     "shower",
-    "chimney",
     "fireplace",
+    "chimney",
     "sauna_bench",
     "stove",
     "electrical_appliance",
     "heater",
     "stair",
-    "wall",
     "railing",
+    "wall",
     "door_swing",
     "door_zfold",
     "door_slide",
+    "door_none",
     "window"
   ],
   "COLOR_MAP": {
@@ -37,6 +38,7 @@
     "door_swing": 140,
     "door_zfold": 150,
     "door_slide": 160,
-    "window": 170
+    "window": 170,
+    "door_none": 180
   }
 }
