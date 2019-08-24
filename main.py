@@ -32,7 +32,7 @@ def convert_image(img, layout):
     if img is None:
         return
     height, width, channels = img.shape
-    rect = (0, 0, 512, 512)
+    rect = (0, 0, 1024, 1024)
     h = rect[3]
     w = int(h * width / height)
     if w > rect[2]:
@@ -56,7 +56,15 @@ def draw_rect(dst, color, points):
 
 
 def draw_polygon(dst, color, points):
-    cv2.fillConvexPoly(dst, np.asarray(points), color)
+    cv2.fillPoly(dst, [np.asarray(points)], color)
+
+
+def contrast(src, contrast_shift):
+    adjust = (contrast_shift + 100.0) / 100.0
+    adjust = adjust * adjust
+    dst = src.copy().astype(np.float32)
+    dst = np.clip((((dst / 255.0 - 0.5) * adjust + 0.5) * 255.0), 0, 255)
+    return dst.astype(np.uint8)
 
 
 if __name__ == "__main__":
@@ -69,9 +77,10 @@ if __name__ == "__main__":
     }
     COLOR_MAP = config['COLOR_MAP']
 
-    src = './src'
-    dst_img = './img'
+    src = './dst'
+    dst_img = './image'
     dst_mask = './mask'
+
     if len(sys.argv) > 1:
         src = sys.argv[1]
     if not os.path.exists(src):
@@ -81,6 +90,7 @@ if __name__ == "__main__":
         os.mkdir(dst_img)
     if not os.path.exists(dst_mask):
         os.mkdir(dst_mask)
+
     files = find_files(src)
 
     for file in files:
@@ -88,13 +98,23 @@ if __name__ == "__main__":
         img_bytes = base64.b64decode(layout['imageData'])
         img_curr = cv2.imdecode(np.fromstring(img_bytes, np.uint8), cv2.IMREAD_COLOR)
         img_resized = convert_image(img_curr, layout)
-        img_mask = np.full(img_resized.shape, np.uint8(255))
+        # img_blur = cv2.GaussianBlur(img_resized, (5, 5), 0)
+        img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
+        # img_contrast = contrast(img_gray, 5)
+
+        ret, img_tresh = cv2.threshold(img_gray, 205, 255, cv2.THRESH_BINARY)
+
+        # img_new = cv2.bitwise_not(cv2.add(cv2.bitwise_not(img_contrast), cv2.bitwise_not(img_tresh)))
+        # img_tresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        shape = img_tresh.shape
+        img_mask = np.full((shape[0], shape[1]), np.uint8(0))
 
         for label in config['LABEL_PRIORITY']:
             objs = filter(lambda x: x['label'] == label, layout['shapes'])
             for o in objs:
-                DRAW_MAP[o['shape_type']](img_mask, tuple(COLOR_MAP[label]), o['points'])
+                DRAW_MAP[o['shape_type']](img_mask, COLOR_MAP[label], o['points'])
         file_name = os.path.splitext(file['name'])[0]
 
-        cv2.imwrite(os.path.join(dst_img, file_name) + '.png', img_resized)
+        cv2.imwrite(os.path.join(dst_img, file_name) + '.png', img_tresh)
         cv2.imwrite(os.path.join(dst_mask, file_name) + '.png', img_mask)
+        print(file_name)
