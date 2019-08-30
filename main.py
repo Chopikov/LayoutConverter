@@ -77,7 +77,7 @@ if __name__ == "__main__":
     }
     COLOR_MAP = config['COLOR_MAP']
 
-    src = './dst'
+    src = './type1'
     dst_img = './image'
     dst_mask = './mask'
 
@@ -98,15 +98,9 @@ if __name__ == "__main__":
         img_bytes = base64.b64decode(layout['imageData'])
         img_curr = cv2.imdecode(np.fromstring(img_bytes, np.uint8), cv2.IMREAD_COLOR)
         img_resized = convert_image(img_curr, layout)
-        # img_blur = cv2.GaussianBlur(img_resized, (5, 5), 0)
         img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
-        # img_contrast = contrast(img_gray, 5)
 
-        ret, img_tresh = cv2.threshold(img_gray, 205, 255, cv2.THRESH_BINARY)
-
-        # img_new = cv2.bitwise_not(cv2.add(cv2.bitwise_not(img_contrast), cv2.bitwise_not(img_tresh)))
-        # img_tresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-        shape = img_tresh.shape
+        shape = img_gray.shape
         img_mask = np.full((shape[0], shape[1]), np.uint8(0))
 
         for label in config['LABEL_PRIORITY']:
@@ -115,6 +109,6 @@ if __name__ == "__main__":
                 DRAW_MAP[o['shape_type']](img_mask, COLOR_MAP[label], o['points'])
         file_name = os.path.splitext(file['name'])[0]
 
-        cv2.imwrite(os.path.join(dst_img, file_name) + '.png', img_tresh)
+        cv2.imwrite(os.path.join(dst_img, file_name) + '.png', img_gray)
         cv2.imwrite(os.path.join(dst_mask, file_name) + '.png', img_mask)
         print(file_name)
