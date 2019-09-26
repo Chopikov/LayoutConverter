@@ -52,5 +52,32 @@
     "door_balcony_bti": 100,
     "door_front": 110,
     "door_double": 115
+  },
+    "COLOR_MAP_BINARY": {
+    "meta": 0,
+    "stair": 0,
+    "sink": 0,
+    "toilet": 0,
+    "bath": 0,
+    "shower": 0,
+    "stove": 0,
+    "riser": 0,
+    "ventilation": 0,
+    "conditioner": 0,
+    "washer": 0,
+    "gutter_type1": 0,
+    "wall_balcony": 255,
+    "wall_arch": 255,
+    "wall_french": 255,
+    "wall_common": 255,
+    "wall_bearing": 255,
+    "window_common_bti": 255,
+    "window_common_type1": 255,
+    "window_balcony": 255,
+    "door_common_bti": 255,
+    "door_common_type1": 255,
+    "door_balcony_bti": 255,
+    "door_front": 255,
+    "door_double": 255
   }
 }

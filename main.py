@@ -32,7 +32,7 @@ def convert_image(img, layout):
     if img is None:
         return
     height, width, channels = img.shape
-    rect = (0, 0, 1024, 1024)
+    rect = (0, 0, 512, 512)
     h = rect[3]
     w = int(h * width / height)
     if w > rect[2]:
@@ -75,11 +75,11 @@ if __name__ == "__main__":
         'rectangle': draw_rect,
         'polygon': draw_polygon,
     }
-    COLOR_MAP = config['COLOR_MAP']
+    COLOR_MAP = config['COLOR_MAP_BINARY']
 
-    src = './type1'
-    dst_img = './image'
-    dst_mask = './mask'
+    src = './res'
+    dst_img = './image1'
+    dst_mask = './mask1'
 
     if len(sys.argv) > 1:
         src = sys.argv[1]

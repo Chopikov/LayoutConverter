@@ -26,8 +26,8 @@ def load_json(cfg_path):
 
 if __name__ == "__main__":
     config, config_name = load_json('./config.json')
-    src = './type1'
-    dst = './dst'
+    src = './dst'
+    dst = './res'
     if not os.path.exists(src):
         print('Not such directory: ', src)
         exit(0)
@@ -60,15 +60,27 @@ if __name__ == "__main__":
 
     walls_balcony = ["wall_balcony_bti", "wall_balcony_type1"]
 
-    # objs = ['window_common', 'wall_balcony', 'window_balcony', 'door_common', 'door_balcony', 'door_entrance',
-    #         'sink_common', 'sink_kitchen', 'toilet', 'bath', 'stove_electric', 'stove_gas']
+    objs = ['window_common', 'wall_balcony', 'window_balcony', 'door_common', 'door_balcony', 'door_entrance',
+            'sink_common', 'sink_kitchen', 'toilet', 'bath', 'stove_electric', 'stove_gas']
 
     for file in files:
         layout, name = load_json(file['path'])
 
         for shape in layout['shapes']:
-            if shape['label'] == '__undefined__':
-                print("Undefined in " + file['path'])
+            # if shape['label'] == '__undefined__':
+            #     print("Undefined in " + file['path'])
+            #
+            # if shape['label'] == 'door_entrance':
+            #     shape['label'] = 'door_common'
+            #
+            # if shape['label'] == 'wall_thin':
+            #     shape['label'] = 'wall_common'
+            # if shape['label'] == 'door_thin':
+            #     shape['label'] = 'door_common'
+            # if shape['label'] == 'floor':
+            #     shape['label'] = 'stair'
+            # if shape['label'] in objs:
+            #     shape['label'] = shape['label'] + '_type1'
 
             if shape['label'] == 'door_entrance_bti':
                 shape['label'] = 'door_common_bti'
@@ -94,15 +106,6 @@ if __name__ == "__main__":
                 shape['label'] = 'bath'
             if shape['label'] in stoves:
                 shape['label'] = 'stove'
-
-            # if shape['label'] == 'wall_thin':
-            #     shape['label'] = 'wall_common'
-            # if shape['label'] == 'door_thin':
-            #     shape['label'] = 'door_common'
-            # if shape['label'] == 'floor':
-            #     shape['label'] = 'stair'
-            # if shape['label'] in objs:
-            #     shape['label'] = shape['label'] + '_bti'
 
             if not shape['label'] in config['LABEL_PRIORITY']:
                 print(shape['label'], file['path'])
