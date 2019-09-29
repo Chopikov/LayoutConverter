@@ -1,31 +1,10 @@
 import os
 import sys
-import json
 import base64
 import cv2
 import numpy as np
 
-
-def find_files(folder):
-    if folder is None:
-        raise Exception('Finding of files failed')
-
-    try:
-        tree = os.walk(folder)
-        files = []
-        for _ in tree:
-            files = files.__add__([{'path': os.path.join(_[0], f), 'name': f}
-                                   for f in filter(lambda x: x[-5:].lower() == '.json', _[2])])
-    except WindowsError:
-        raise Exception('Finding of files failed')
-    return files
-
-
-def load_json(cfg_path):
-    with open(cfg_path, 'r') as f:
-        cfg = json.load(f)
-    # config_path = os.path.split(cfg_path)[0]
-    return cfg
+from utils import find_files, load_json
 
 
 def convert_image(img, layout):
@@ -91,7 +70,7 @@ if __name__ == "__main__":
     if not os.path.exists(dst_mask):
         os.mkdir(dst_mask)
 
-    files = find_files(src)
+    files = find_files(src, '.json')
 
     for file in files:
         layout = load_json(file['path'])

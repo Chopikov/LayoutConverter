@@ -1,20 +1,6 @@
 import json
 import os
-
-
-def find_files(folder):
-    if folder is None:
-        raise Exception('Finding of files failed')
-
-    try:
-        tree = os.walk(folder)
-        files = []
-        for _ in tree:
-            files = files.__add__([{'path': os.path.join(_[0], f), 'name': f}
-                                   for f in filter(lambda x: x[-5:].lower() == '.json', _[2])])
-    except WindowsError:
-        raise Exception('Finding of files failed')
-    return files
+from utils import find_files
 
 
 def load_json(cfg_path):
@@ -34,7 +20,7 @@ if __name__ == "__main__":
     if not os.path.exists(dst):
         os.mkdir(dst)
 
-    files = find_files(src)
+    files = find_files(src, '.json')
 
     commons = ["wall_common_empty", "wall_common_filled",  "wall_common_cell", "wall_common_stroke",
                "wall_common_point", "wall_common_dotted-line"]
